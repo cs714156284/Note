@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<!-- 导入vue包 -->
+		<script src="./lib/vue.js"></script>
+	</head>
+	<body>
+		<!-- 创建控制区域 -->
+		<div id="app">
+			<input type="button" value="开始" v-on:click="start" />
+			<input type="button" value="停止" v-on:click="stop" />
+			<h1 v-text="msg"></h1>
+		</div>
+		<script>
+			// 在VM实例中，想要获取data上的数据，或调用methods中的方法，必须通过this.数据属性名 或 this.方法名进行访问
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					msg: '蜻蜓队长走马灯!',
+					// 创建定时器变量便于全局使用
+					timdId: null
+				},
+				methods: {
+					start(){
+						// 避免定时器重复开启
+						if(this.timeId != null) return;
+						// 创建定时器
+						this.timeId = setInterval( () => {
+							console.log(this.msg)
+							// 获取第一个字符
+							var first = this.msg.substring(0,1)
+							// 获取后面的字符
+							var end = this.msg.substring(1)
+							// 重新拼接得到新的字符串
+							this.msg = end + first
+						},400)
+					},
+					stop(){
+						console.log(this.msg)
+						console.log(this.timeId)
+						clearInterval(this.timeId)
+						// 重置定时器变量
+						this.timeId = null
+						console.log(this.timeId)
+						
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
